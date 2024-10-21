@@ -1,17 +1,35 @@
 // Telainicial.js
 
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { launchCameraAsync } from 'expo-image-picker';
+import React, { useEffect } from 'react';
+import { View, Text, Button, StyleSheet, Platform, Alert } from 'react-native';
+import { launchCameraAsync, requestCameraPermissionsAsync } from 'expo-image-picker';
 
-export default function Telainicial() {
+export default function Telainicial({ navigation }) {
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Atenção', 'Desculpe, precisamos da permissão da câmera para isso funcionar!');
+        }
+      }
+    })();
+  }, []);
+
   const handleAbrirCamera = async () => {
     let resultado = await launchCameraAsync({
+      mediaTypes: 'Images',
       allowsEditing: false,
       quality: 1,
     });
-    // A foto é tirada e ele volta para tela inicial
-    // Você pode manipular o resultado aqui, se necessário
+
+    if (!resultado.cancelled) {
+      // Navega para a tela de relatório passando o URI da foto
+      navigation.navigate('ReportScreen', { photoUri: resultado.assets[0].uri });
+    } else {
+      // Caso o usuário cancele a câmera
+      console.log('Câmera cancelada');
+    }
   };
 
   return (
