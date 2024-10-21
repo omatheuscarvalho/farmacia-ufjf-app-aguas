@@ -1,24 +1,23 @@
 // ImageCropperScreen.js
 
-import React, { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, View, StyleSheet } from 'react-native';
-import { ImageEditor } from 'expo-image-editor';
+import React, { useRef, useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { ImageEditor } from "expo-image-editor";
+import { Appbar, ActivityIndicator } from "react-native-paper";
 
 export default function ImageCropperScreen({ route, navigation }) {
   const { imageUri } = route.params;
   const [isProcessing, setIsProcessing] = useState(false);
-  const hasNavigatedRef = useRef(false); // Referência para evitar múltiplas navegações
+  const hasNavigatedRef = useRef(false);
 
   const handleSave = async (editedImage) => {
-    if (hasNavigatedRef.current) return; // Evita navegação duplicada
+    if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
-    console.log('Imagem salva:', editedImage);
-    console.log('Navegando');
+    console.log("Imagem salva:", editedImage);
     setIsProcessing(true);
     try {
-      navigation.replace('ReportScreen', { photoUri: editedImage.uri });
+      navigation.replace("ReportScreen", { photoUri: editedImage.uri });
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível processar a imagem.');
       console.error(error);
     } finally {
       setIsProcessing(false);
@@ -26,30 +25,34 @@ export default function ImageCropperScreen({ route, navigation }) {
   };
 
   const handleCancel = () => {
-    if (hasNavigatedRef.current) return; // Evita navegação duplicada
+    if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
-    console.log('Edição cancelada');
+    console.log("Edição cancelada");
     navigation.goBack();
   };
 
   if (isProcessing) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator animating={true} size="large" color="#00796B" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={handleCancel} />
+        <Appbar.Content title="Cortar Imagem" />
+      </Appbar.Header>
       <ImageEditor
         imageUri={imageUri}
-        fixedCropAspectRatio={16 / 9} // Ajuste a proporção conforme necessário
-        lockAspectRatio={false} // Permite que o usuário ajuste a proporção
+        fixedCropAspectRatio={16 / 9}
+        lockAspectRatio={false}
         minimumCropDimensions={{ width: 100, height: 100 }}
         onEditingComplete={handleSave}
         onCloseEditor={handleCancel}
-        mode="crop-only" // Modo apenas de corte
+        mode="crop-only"
       />
     </View>
   );
@@ -57,13 +60,12 @@ export default function ImageCropperScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor: '#000', // Fundo preto para melhor visualização do editor
+    flex: 1,
   },
   loadingContainer: {
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000', // Fundo preto durante o carregamento
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
   },
 });
