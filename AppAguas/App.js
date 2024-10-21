@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Telainicial from './Telainicial.js';
+import ImageCropperScreen from './ImageCropperScreen.js';
 import ReportScreen from './ReportScreen.js';
 
 const Stack = createStackNavigator();
@@ -16,6 +17,11 @@ export default function App() {
         <Stack.Screen
           name="Telainicial"
           component={Telainicial}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ImageCropperScreen"
+          component={ImageCropperScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

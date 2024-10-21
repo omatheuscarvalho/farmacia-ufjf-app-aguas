@@ -72,14 +72,12 @@ export default function Telainicial({ navigation }) {
   const handleTirarFoto = async () => {
     let resultado = await launchCameraAsync({
       mediaTypes: 'Images',
-      allowsEditing: true, // Habilita o corte da imagem
-      aspect: [4, 3],      // Define a proporção do corte
+      allowsEditing: false,
       quality: 1,
     });
 
-    if (!resultado.cancelled && resultado.assets && resultado.assets.length > 0) {
-      // Navega para a tela de relatório passando o URI da foto
-      navigation.navigate('ReportScreen', { photoUri: resultado.assets[0].uri });
+    if (!resultado.canceled && resultado.assets && resultado.assets.length > 0) {
+      navigation.navigate('ImageCropperScreen', { imageUri: resultado.assets[0].uri });
     } else {
       console.log('Câmera cancelada');
     }
@@ -88,14 +86,12 @@ export default function Telainicial({ navigation }) {
   const handleSelecionarFoto = async () => {
     let resultado = await launchImageLibraryAsync({
       mediaTypes: 'Images',
-      allowsEditing: true, // Habilita o corte da imagem
-      aspect: [4, 3],      // Define a proporção do corte
+      allowsEditing: false,
       quality: 1,
     });
 
-    if (!resultado.cancelled && resultado.assets && resultado.assets.length > 0) {
-      // Navega para a tela de relatório passando o URI da foto
-      navigation.navigate('ReportScreen', { photoUri: resultado.assets[0].uri });
+    if (!resultado.canceled && resultado.assets && resultado.assets.length > 0) {
+      navigation.navigate('ImageCropperScreen', { imageUri: resultado.assets[0].uri });
     } else {
       console.log('Seleção de imagem cancelada');
     }
@@ -138,10 +134,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // Alinha verticalmente
     alignItems: 'center',     // Alinha horizontalmente
+    backgroundColor: '#f5f5f5',
   },
   logo: {
     fontSize: 36,
     marginBottom: 20,
+    fontWeight: 'bold',
+    color: '#333333',
   },
   modalBackground: {
     flex: 1,
@@ -151,5 +150,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: '#ffffff',
     padding: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
 });

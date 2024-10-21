@@ -28,16 +28,16 @@ export default function ReportScreen({ route }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{reportData.title}</Text>
       <View style={styles.infoContainer}>
-        <Text>
+        <Text style={styles.infoText}>
           <Text style={styles.label}>Data:</Text> {reportData.date}
         </Text>
-        <Text>
+        <Text style={styles.infoText}>
           <Text style={styles.label}>Inspetor:</Text> {reportData.inspector}
         </Text>
-        <Text>
+        <Text style={styles.infoText}>
           <Text style={styles.label}>Local:</Text> {reportData.location}
         </Text>
-        <Text>
+        <Text style={styles.infoText}>
           <Text style={styles.label}>Achados:</Text> {reportData.findings}
         </Text>
       </View>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
   errorText: {
     fontSize: 18,
@@ -58,6 +59,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: 'bold',
+    color: '#333333',
   },
   infoContainer: {
     width: '100%',
@@ -65,10 +68,17 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: 'bold',
+    color: '#555555',
+  },
+  infoText: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#555555',
   },
   photo: {
-    width: 300,
-    height: 400,
+    width: '100%',
+    aspectRatio: 16 / 9,
+    borderRadius: 10,
     marginTop: 20,
   },
 });
